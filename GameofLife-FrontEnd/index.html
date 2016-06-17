@@ -1,0 +1,104 @@
+<html>
+
+<head>
+    <title>Game of Life</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <script type="text/javascript" src="angular-1.0.0rc1.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+    <link rel="stylesheet" type="text/css" href="toggle-btn.css" />
+    <link href="libs/bootstrap.min.css" rel="stylesheet" />
+    <script src="libs/jquery.min.js"></script>
+    <script src="libs/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div ng:app ng-controller="GameOfLifeCntl">
+        <h1>Game of Life</h1> Height:
+        <input type="text" ng-model="height" /> Width:
+        <input type="text" ng-model="width" />
+        <button ng-click="newGame()">Set Grid</button>
+        <button ng-click="next()">Next</button>
+        <button ng-click="update()">Update</button>
+        <ul class='tg-list'>
+            <li class='tg-list-item'>
+                <h4>Auto Evolve</h4>
+                <input class='tgl tgl-light' id='cb1' type='checkbox' ng-click="autoUpdate()" ng-model="autoUpdateValue">
+                <label class='tgl-btn' for='cb1'></label>
+            </li>
+        </ul>
+        <div class="row" id="model-grid">
+            <div class="col ">
+                <div class="container" id="model-container">
+                    <h4>Predefined Models</h4>
+                    <!-- Trigger the modal with a button -->
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">Select Model</button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="myModal" role="dialog">
+
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="gridSystemModalLabel">Modal title</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <a ng-click="defineModel('blinker')">
+                                                <img src="models/Game_of_life_blinker.gif" /><h3>Blinker</h3>
+                                            </a>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <a ng-click="defineModel('beacon')">
+                                                <img src="models/Game_of_life_beacon.gif" />
+                                                <h3>Beacon</h3>
+                                            </a>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <a ng-click="defineModel('toad')"> <img src="models/Game_of_life_toad.gif" /><h3>Toad</h3></a>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <a ng-click="defineModel('glider')">
+                                                <img src="models/Game_of_life_animated_glider.gif" />
+                                                <h3>Glider</h3>
+                                            </a>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <a ng-click="defineModel('column')">
+                                                <img src="models/I-Column.gif" />
+                                                <h3>Column</h3>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+                </div>
+            </div>
+            <div class="col">
+                <table id="board">
+                    <tr ng-repeat="row in board">
+                        <td ng-repeat="cell in row" ng-click="toggle($parent.$index, $index)" class="{{cellClass($parent.$index, $index)}}">
+                            <span ng-show="cell">O</span>
+                        </td>
+                    </tr>
+                </table>
+                <p class="history" ng-show="history.length > 0">Previous steps (click to rewind)</p>
+                <table class="history">
+                    <tr>
+                        <td ng-repeat="step in history" ng-click="$parent.step($index)">{{$index}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+</body>
+
+</html>
