@@ -67,7 +67,6 @@
     <Content Include="models\Game_of_life_animated_glider.gif" />
     <Content Include="models\Game_of_life_beacon.gif" />
     <Content Include="models\Game_of_life_blinker.gif" />
-    <Content Include="models\Game_of_life_pulsar.gif" />
     <Content Include="models\Game_of_life_toad.gif" />
     <Content Include="models\I-Column.gif" />
     <Content Include="toggle-btn.css" />

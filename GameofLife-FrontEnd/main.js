@@ -4,11 +4,11 @@ function GameOfLifeCntl($scope, $http, $resource) {
         $scope.history = [];
         $scope.board = init($scope.height, $scope.width);
     };
-
-    $scope.next = function() {
-        //  $scope.history.push($scope.board);
-        $scope.board = computeNext($scope.board);
-    };
+    function _initilize() {
+        $scope.height = 10;
+        $scope.width = 10;
+        $scope.newGame();
+    }
 
     function init(height, width) {
         var board = [];
@@ -76,8 +76,10 @@ function GameOfLifeCntl($scope, $http, $resource) {
             $scope.board[1][2] = true;
         }
         else if (type === 'column') {
-            $scope.height += 6;
-            $scope.width += 6;
+            if ($scope.height < 16 || $scope.width < 8) {
+                $scope.height = 16;
+                $scope.width = 8;
+            }
             $scope.board = init($scope.height, $scope.width);
 
             $scope.board[2][3] = true;
@@ -123,7 +125,6 @@ function GameOfLifeCntl($scope, $http, $resource) {
                 console.log('got response');
                  $scope.board = response.board;
                   // $scope.$apply();
-                console.log(response);
             });
     }
 
@@ -137,16 +138,10 @@ function GameOfLifeCntl($scope, $http, $resource) {
         } else {
             clearInterval($scope.interval);
         }
-
     }
     $scope.update = function() {
         updateModel($scope.height, $scope.width, $scope.board);
-    }
-
-    $scope.step = function(index) {
-        $scope.board = $scope.history[index];
-        $scope.history = $scope.history.slice(0, index);
-    };
+    }    
 
     $scope.toggle = function(row, cell) {
         $scope.history = []; // Reset history as it is no longer accurate       
@@ -161,25 +156,7 @@ function GameOfLifeCntl($scope, $http, $resource) {
             return "new";
         }
         return "";
-    };
-
-    $scope.height = 10;
-    $scope.width = 10;
-    $scope.newGame();
-
-
-
-    function computeNext(board) {
-        var newBoard = [];
-        for (var r = 0; r < board.length; r++) {
-            var newRow = [];
-            for (var c = 0; c < board[r].length; c++) {
-                newRow.push(willLive(board, r, c) || newCell(board, r, c));
-            }
-            newBoard.push(newRow);
-        }
-        return newBoard;
-    }
+    };   
 
     function willLive(board, row, cell) {
         return cellAt(board, row, cell) && neighbours(board, row, cell) >= 2 && neighbours(board, row, cell) <= 3;
@@ -211,13 +188,5 @@ function GameOfLifeCntl($scope, $http, $resource) {
             cell >= 0 && cell < board[row].length &&
             board[row][cell]);
     }
-/*setTimeout(function() {
-             setInterval(function() {
-            $scope.next();
-            $scope.$apply();
-            console.log('starting');
-              },
-              1000)
-        },
-        10000);*/
+    _initilize();
 }
